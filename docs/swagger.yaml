@@ -1,0 +1,338 @@
+swagger: "2.0"
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: thg.mnzs@gmail.com
+    name: Thiago Menezes
+  description: magalu Challenge API
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: magalu Challenge API
+  version: "1.0"
+paths:
+  /tenants:
+    post:
+      consumes:
+        - application/json
+      description: Create a new tenant with the input payload
+      parameters:
+        - description: Create tenant
+          in: body
+          name: tenant
+          required: true
+          schema:
+            $ref: '#/definitions/Tenant'
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Tenant'
+      summary: Create a new tenant
+      tags:
+        - tenants
+    get:
+      consumes:
+        - application/json
+      description: Get details of a tenant by ID
+      produces:
+        - application/json
+      parameters:
+        - name: tenantId
+          in: path
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Tenant'
+        "404":
+          description: Not Found
+      summary: Get tenant details
+      tags:
+        - tenants
+  /products:
+    post:
+      consumes:
+        - application/json
+      description: Create a new product with the input payload
+      parameters:
+        - description: Create product
+          in: body
+          name: product
+          required: true
+          schema:
+            $ref: '#/definitions/Product'
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Product'
+      summary: Create a new product
+      tags:
+        - products
+    get:
+      consumes:
+        - application/json
+      description: Get details of a product by ID
+      produces:
+        - application/json
+      parameters:
+        - name: productId
+          in: path
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Product'
+        "404":
+          description: Not Found
+      summary: Get product details
+      tags:
+        - products
+  /contracts:
+    post:
+      consumes:
+        - application/json
+      description: Create a new contract with the input payload
+      parameters:
+        - description: Create contract
+          in: body
+          name: contract
+          required: true
+          schema:
+            $ref: '#/definitions/Contract'
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Contract'
+      summary: Create a new contract
+      tags:
+        - contracts
+    get:
+      consumes:
+        - application/json
+      description: Get details of a contract by ID
+      produces:
+        - application/json
+      parameters:
+        - name: contractId
+          in: path
+          required: true
+          type: integer
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/Contract'
+        "404":
+          description: Not Found
+      summary: Get contract details
+      tags:
+        - contracts
+  /pulses:
+    post:
+      consumes:
+        - application/json
+      description: Create a new pulse with the input payload
+      parameters:
+        - description: Create pulse
+          in: body
+          name: pulse
+          required: true
+          schema:
+            $ref: '#/definitions/Pulse'
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Pulse'
+      summary: Create a new pulse
+      tags:
+        - pulses
+  /tenants/{tenant}/sku/{sku}/consumption:
+    get:
+      consumes:
+        - application/json
+      description: Get current month consumption for a specific SKU
+      produces:
+        - application/json
+      parameters:
+        - name: tenant
+          in: path
+          required: true
+          type: string
+        - name: sku
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            properties:
+              sku:
+                type: string
+              consumption:
+                type: number
+                format: float
+        "404":
+          description: Not Found
+      summary: Get current month consumption
+      tags:
+        - consumption
+  /tenants/{tenant}/consumption:
+    get:
+      consumes:
+        - application/json
+      description: Get total consumption for all resources of a tenant
+      produces:
+        - application/json
+      parameters:
+        - name: tenant
+          in: path
+          required: true
+          type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: object
+            additionalProperties:
+              type: number
+              format: float
+        "404":
+          description: Not Found
+      summary: Get total consumption
+      tags:
+        - consumption
+  /transactions:
+    post:
+      consumes:
+        - application/json
+      description: Create a new transaction with the input payload
+      parameters:
+        - description: Create transaction
+          in: body
+          name: transaction
+          required: true
+          schema:
+            $ref: '#/definitions/Transaction'
+      produces:
+        - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/Transaction'
+      summary: Create a new transaction
+      tags:
+        - transactions
+  /health:
+    get:
+      consumes:
+        - application/json
+      description: Get health status
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: OK
+      summary: Get health status
+      tags:
+        - health
+definitions:
+  Tenant:
+    type: object
+    properties:
+      tenant_id:
+        type: integer
+      document_number:
+        type: string
+    required:
+      - document_number
+  OperationType:
+    type: object
+    properties:
+      operation_type_id:
+        type: integer
+      description:
+        type: string
+  Product:
+    type: object
+    properties:
+      product_id:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+        format: float
+      metric_unit:
+        type: string
+  Contract:
+    type: object
+    properties:
+      contract_id:
+        type: string
+      tenant_id:
+        type: string
+      product_id:
+        type: string
+      contract_mode:
+        type: string
+      start_date:
+        type: string
+        format: date-time
+      end_date:
+        type: string
+        format: date-time
+      status:
+        type: string
+  Pulse:
+    type: object
+    properties:
+      pulse_id:
+        type: string
+      tenant:
+        type: string
+      product_sku:
+        type: string
+      used_amount:
+        type: number
+        format: float
+      use_unity:
+        type: string
+      timestamp:
+        type: string
+        format: date-time
+  Transaction:
+    type: object
+    properties:
+      transaction_id:
+        type: string
+      tenant_id:
+        type: string
+      operation_type_id:
+        type: string
+      amount:
+        type: number
+        format: float
+      event_date:
+        type: string
+        format: date-time

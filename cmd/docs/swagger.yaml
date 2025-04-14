@@ -1,0 +1,15 @@
+basePath: /
+host: localhost:8080
+info:
+  contact:
+    email: thg.mnzs@gmail.com
+    name: Thiago Menezes
+  description: API para desafio técnico da Magalu Cloud
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: magalu Challenge API
+  version: "1.0"
+paths: {}
+swagger: "2.0"
